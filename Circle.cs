@@ -6,7 +6,7 @@
         public int _posX { get; set; }
         public int _posY { get; set; }
 
-        public bool _ShowCursor = Console.CursorVisible = false;
+        private bool _ShowCursor = Console.CursorVisible = false;
         public Circle(int posY, int posX, int radius, string color, char circleChar)
         {
             _posY = posY;
@@ -37,6 +37,5 @@
                 }
             }
             _ShowCursor = false;
-            return;
         }
     }
