@@ -1,47 +1,42 @@
-namespace Maya.Drawing
-{
-	public class MayaDrawing
-    {
-        private static int largestMaxWidth = Console.LargestWindowWidth;
-      
-        private static int largestMaxHeight = Console.LargestWindowHeight;
-        public static void WriteFileToPos(int width, int height, string color, string file)
+public static void WriteFileToPos(int width, int height, string color, string file)
         {
             if (File.Exists(file))
             {
                 string text = File.ReadAllText(file);
                 Console.CursorVisible = false;
-                MayaDrawing.consoleColor(color);
-                MayaDrawing.WriteStringToPosition(width, height,file);
+                consoleColor(color);
+                WriteStringToPosition(width, height, text);
             }
-            else { return; }
         }
         public static void WriteStringToPosition(int posX, int posY, string value)
         {
-            if (posX <= 0 || posY <= 0) { return; }
-            if (posY >= Console.WindowWidth || posX >= Console.WindowHeight) { return; }
-
-            Console.SetCursorPosition(posY,posX);
-            Console.Write(value);
-            Console.SetCursorPosition(0, 0);
-            Console.CursorVisible = false;
-            return;
+            if (posX > 0 && posX < Console.WindowHeight &&
+                posY > 0 && posY < Console.WindowWidth)
+            {
+                Console.SetCursorPosition(posY, posX);
+                Console.Write(value);
+                Console.SetCursorPosition(0, 0);
+                Console.CursorVisible = false;
+            }
         }
         public static string ReturnString(string value)
         {
             Console.SetCursorPosition(0, 0);
             Console.CursorVisible = false;
-            return value; 
+            return value;
         }
-        public static void CharToPosition(int posY, int posX, char Char)
+        public static void CharToPosition(int posX, int posY, char Char)
         {
             if (posX <= 0 || posY <= 0) { return; }
-            if (posY >= Console.WindowWidth || posX >= Console.WindowHeight) { return; }
+            if (posX >= Console.WindowWidth || posY >= Console.WindowHeight) { return; }
 
-            Console.SetCursorPosition(posY, posX);
+            Console.SetCursorPosition(posX, posY);
             Console.Write(Char);
             Console.CursorVisible = false;
-            return;
+        }
+        public static void WriteCharToPosition(int posX, int posY, char value)
+        {
+            WriteStringToPosition(posX, posY, value.ToString());
         }
         public static char ReturnChar(char value)
         {
@@ -49,48 +44,43 @@ namespace Maya.Drawing
             Console.CursorVisible = false;
             return value;
         }
-        public static void ReplaceChar(string file, char a, char b)
+        public static string ReplaceChar(string file, char a, char b)
         {
-            string[] lines = File.ReadAllLines(file);
-
-            for (int i = 0; i < lines.Length; i++)
-            {
-                for (int j = 0; j < lines[i].Length; j++)
-                {
-                    if (lines[i][j] == a) { Console.Write(b); }
-
-                    else { Console.Write(lines[i][j]); }
-                }
-                Console.WriteLine();
-            }
+            string content = File.ReadAllText(file);
+            content = content.Replace(a, b);
+            File.WriteAllText(file, content);
+            return content;
         }
-        public static void FindString(string[] search, string searchin)
+        // Comparing
+        public static bool IsCharEqual(char chA, char chB)
         {
-            string myString = searchin;
+            Console.WriteLine(chA.Equals(chB));
+            return true;
 
-            string[] searchStrings = search;
+        }
+        public static bool IsNotCharEqual(char chA, char chB)
+        {
+            Console.WriteLine(chB.Equals(chA));
+            return false;
 
-            // string[] searchStrings = { "ist", "x", "ein" };
-
-            foreach (string searchString in searchStrings)
+        }
+        public static List<int> FindStrings(string[] search, string searchIn)
+        {
+            List<int> indices = new List<int>();
+            foreach (string searchString in search)
             {
-                int index = myString.IndexOf(searchString);
-                if (index == -1)
+                int index = searchIn.IndexOf(searchString);
+                if (index != -1)
                 {
-                    Console.WriteLine($"{searchString} nicht gefunden.");
-                }
-                else
-                {
-                    Console.WriteLine($"{searchString} gefunden an Index {index}.");
+                    indices.Add(index);
                 }
             }
+            return indices;
         }
         public static string GetMaxWindowSize()
         {
-            string Max = largestMaxWidth + " " + largestMaxHeight;
-            return Max;
+            return $"{Console.WindowWidth} {Console.WindowHeight}";
         }
-
         public static ConsoleColor _getColor = new ConsoleColor();
         public static ConsoleColor consoleColor(string _Color)
         {
@@ -176,6 +166,52 @@ namespace Maya.Drawing
         }
         public static string GetCodePage()
         { string codepage = Console.InputEncoding.CodePage.ToString(); return codepage; }
+        public static void FillBG(string colorbg)
+        {
+            char[,] consoleArray = new char[Console.WindowWidth, Console.WindowHeight];
+            int row;
+            int col;
+            consoleColor(colorbg);
+            while (true)
+            {
+                for (row = 1; row < Console.WindowHeight; row++)
+                {
+                    for (col = 1; col < Console.WindowWidth; col++)
+                    {
+                        consoleArray[row, col] = ' ';
+                    }
+                }
+                for (row = 1; row < Console.WindowHeight; row++)
+                {
+                    for (col = 1; col < Console.WindowWidth; col++)
+                    {
+                        Console.Write(consoleArray[row, col]);
+                    }
+                }
+            }
+        }
+        public static void FillFG(string colorbg)
+        {
+            char[,] consoleArray = new char[Console.WindowWidth, Console.WindowHeight];
+            int row;
+            int col;
+            consoleColor(colorbg);
+            while (true)
+            {
+                for (row = 1; row < Console.WindowHeight; row++)
+                {
+                    for (col = 1; col < Console.WindowWidth; col++)
+                    {
+                        consoleArray[row, col] = ' ';
+                    }
+                }
+                for (row = 1; row < Console.WindowHeight; row++)
+                {
+                    for (col = 1; col < Console.WindowWidth; col++)
+                    {
+                        Console.Write(consoleArray[row, col]);
+                    }
+                }
+            }
+        }
     }
-} 
- 
