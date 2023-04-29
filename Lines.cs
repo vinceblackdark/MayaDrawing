@@ -17,14 +17,14 @@
         {
             MayaDrawing.consoleColor(_Color);
 
-            for (int y = 0; y < _length; y++) 
+            for (int y = 0; y < _length; y++)
             { MayaDrawing.CharToPosition(_posX, _posY + y, _Style); }
             Console.CursorVisible = false;
             return;
         }
 
     }
-    public class LineHorizontal
+     public class LineHorizontal
     {
         public int _length { get; set; }
         public int _posY { get; set; }
